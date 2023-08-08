@@ -2,106 +2,11 @@ import wordFreqData from '../assets/five_letter_possible_words.json'
 import maxHeap from '../ds/maxheap';
 
 var wordSpace = [];
-const P = 0.00043308791684711995
+var P = 0.00043308791684711995
 
 for (const word in wordFreqData) {
   wordSpace.push(word)
 }
-
-
-
-// function filterWords(grayLetters, yellowLetters, greenLetters){
-//   const filteredWordsList = [];
-
-//   for(let word of wordSpace){
-//     var ok=true;
-
-//     for(let l of grayLetters){
-//       const idx = word.indexOf(l);
-
-//       if(idx!==-1){
-//         ok=false;
-//         break;
-//       }
-//     }
-
-//     for(let gl of greenLetters){
-//       if(word[gl[1]]!==gl[0]){
-//         ok=false;
-//         break;
-//       }
-//     }
-
-//     for(let l of yellowLetters){
-//       const idx = word.indexOf(l);
-
-//       if(idx===-1){
-//         ok=false;
-//         break;
-//       }
-//     }
-
-//     if(ok) filteredWordsList.push(word);
-//   }
-
-//   return filteredWordsList;
-// }
-
-
-
-
-
-// function calcEntropy(word){
-
-//   var entropy = 0;
-
-//   //0 -> gray ; 1-> yellow ; 2 -> green
-//   for(let a=0;a<3;a++){
-//     for(let b=0;b<3;b++){
-//       for(let c=0;c<3;c++){
-//         for(let d=0;d<3;d++){
-//           for(let e=0;e<3;e++){
-
-//             const greenLetters = []
-//             const yellowLetters =[]
-//             const grayLetters = []
-
-//             if(a===0) grayLetters.push(word[0]);
-//             if(a===1) yellowLetters.push(word[0]); 
-//             if(a===2) greenLetters.push([word[0],0]); 
-
-//             if(b===0) grayLetters.push(word[1]);
-//             if(b===1) yellowLetters.push(word[1]); 
-//             if(b===2) greenLetters.push([word[1],1]); 
-
-//             if(c===0) grayLetters.push(word[2]);
-//             if(c===1) yellowLetters.push(word[2]); 
-//             if(c===2) greenLetters.push([word[2],2]); 
-
-//             if(d===0) grayLetters.push(word[3]);
-//             if(d===1) yellowLetters.push(word[3]); 
-//             if(d===2) greenLetters.push([word[3],3]); 
-
-//             if(e===0) grayLetters.push(word[4]);
-//             if(e===1) yellowLetters.push(word[4]); 
-//             if(e===2) greenLetters.push([word[4],4]); 
-
-
-//             const filteredWordsList = filterWords(grayLetters, yellowLetters, greenLetters);
-            
-//             var p = P('') * filteredWordsList.length;
-//             // for(let word of filteredWordsList){
-//             //   p += P(word);
-//             // }
-//             entropy += p * log2(1/p);
-//           }
-//         }
-//       }
-//     }
-//   }
-
-//   return entropy;
-// }
 
 function log2(x){
   return Math.log2(x);
@@ -158,6 +63,7 @@ function filterWordSpace(wordData){
   }
 
   wordSpace = updatedWordSpace;
+  P = 1/wordSpace.length;
 }
 
 function getPattern(word1, word2) {
@@ -245,10 +151,10 @@ const wordleSolver = (wordData) => {
     filterWordSpace(wordData);
 
     const wordInfoList = calcInfo();
-    wordInfoList.show();
+    const infoListSize = wordInfoList.size();
 
     const top10Words = [];
-    for(let i=0;i<9;i++){
+    for(let i=0;i<Math.min(10,infoListSize);i++){
       var wordEntity = wordInfoList.pop();
 
       //swap 0 and 1 pos
