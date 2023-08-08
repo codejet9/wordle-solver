@@ -22,7 +22,7 @@ const App = () => {
     <div className='min-w-[20rem]'>
       <Header />
 
-      <main className='py-6 px-20 flex flex-row flex-wrap justify-between gap-4'>
+      <main className='pt-20 pb-12 px-6 flex flex-col flex-wrap justify-center items-center gap-4'>
         <div><LetterGrid handleWordData={handleWordData}/></div>
         <Table wordsList={wordsList}/>
       </main>

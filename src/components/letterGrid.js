@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 const createInitialGrid = (rows, cols) => {
   const grid = [];
@@ -83,7 +83,7 @@ const LetterGrid = ({handleWordData}) => {
   }
 
   return (
-    <div className="grid grid-rows-6 gap-1">
+    <div className="grid grid-rows-6 gap-1 min-w-[17rem]">
       {grid.map((row, rowIndex) => (
         <div key={rowIndex} >
           {row.map((cell, colIndex) => (
