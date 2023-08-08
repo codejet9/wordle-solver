@@ -5,7 +5,7 @@ const createInitialGrid = (rows, cols) => {
   for (let i = 0; i < rows; i++) {
     const row = [];
     for(let j=0;j<cols;j++){
-      row.push(['white',''])
+      row.push(['gray',''])
     }
     grid.push(row)
   }
@@ -28,7 +28,7 @@ const LetterGrid = ({handleWordData}) => {
       newGrid[rowIndex][colIndex][1] = value;
 
       // Move focus to the next cell in the adjacent column
-      if (colIndex < cols - 1) {
+      if (colIndex < cols - 1 && value!=='') {
         inputRefs.current[rowIndex][colIndex + 1].focus();
       }
 
@@ -48,9 +48,8 @@ const LetterGrid = ({handleWordData}) => {
       if(colIndex===cols-1 ){
         const wordData = []
         for(let i=0;i<cols;i++){
-          if(grid[rowIndex][i][0]==='white'){
-            alert("Please set colors to the letters");
-            return;
+          if(grid[rowIndex][i][0]==='green'){
+            if(rowIndex+1<rows) grid[rowIndex+1][i]=grid[rowIndex][i];
           }
           wordData.push(grid[rowIndex][i]);
         }
@@ -66,10 +65,7 @@ const LetterGrid = ({handleWordData}) => {
     setGrid(prevGrid => {
       const newGrid = [...prevGrid];
       
-      if(newGrid[rowIndex][colIndex][0]==='white'){
-        newGrid[rowIndex][colIndex][0]='gray';
-      }
-      else if(newGrid[rowIndex][colIndex][0]==='gray'){
+      if(newGrid[rowIndex][colIndex][0]==='gray'){
         newGrid[rowIndex][colIndex][0]='yellow';
       }
       else if(newGrid[rowIndex][colIndex][0]==='yellow'){

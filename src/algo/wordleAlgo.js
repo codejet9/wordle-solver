@@ -25,7 +25,7 @@ function filterWordSpace(wordData){
       grayLetters.push(wordData[i][1])
     }
     else{
-      yellowLetters.push(wordData[i][1]);
+      yellowLetters.push([wordData[i][1],i]);
     }
   }
 
@@ -33,25 +33,38 @@ function filterWordSpace(wordData){
   var updatedWordSpace = []
   for(let word of wordSpace){
     var ok = true;
+    var exclusionListForGray = []
 
     for(let gl of greenLetters){
       if(word[gl[1]]!==gl[0]){
         ok=false; break;
       }
+      exclusionListForGray.push(gl[0])
     }
 
+    
+
+    for(let e of yellowLetters){
+      let j = word.indexOf(e[0]);
+
+      if(j===-1){
+        ok=false; break;
+      }
+
+      if(j===e[1]){
+        ok=false; break;
+      }
+
+      exclusionListForGray.push(e[0])
+    }
+
+
     for(let e of grayLetters){
+      if(exclusionListForGray.includes(e)) continue;
+      
       let j = word.indexOf(e);
 
       if(j!==-1){
-        ok=false; break;
-      }
-    }
-
-    for(let e of yellowLetters){
-      let j = word.indexOf(e);
-
-      if(j===-1){
         ok=false; break;
       }
     }
