@@ -13,7 +13,7 @@ const createInitialGrid = (rows, cols) => {
 };
 
 
-const LetterGrid = () => {
+const LetterGrid = ({handleWordData}) => {
   const rows = 6;
   const cols = 5;
 
@@ -45,14 +45,22 @@ const LetterGrid = () => {
         inputRefs.current[rowIndex + 1][0].focus();
       }
 
-      if(colIndex==cols-1 ) handleFunction();
+      if(colIndex===cols-1 ){
+        const wordData = []
+        for(let i=0;i<cols;i++){
+          if(grid[rowIndex][i][0]==='white'){
+            alert("Please set colors to the letters");
+            return;
+          }
+          wordData.push(grid[rowIndex][i]);
+        }
+
+        handleWordData(wordData);
+      }
     }
   };
 
-  const handleFunction = () => {
-    // Your function logic here when the user hits Enter in the last cell of the grid
-    console.log('Function triggered!');
-  };
+  
 
   const handleColorChange = (rowIndex, colIndex) => {
     setGrid(prevGrid => {
@@ -93,15 +101,16 @@ const LetterGrid = () => {
               }}
               style={{
                 'backgroundColor':(cell[0]==='white') ? 'white' : (cell[0]==='gray') ? '#9CA3AF' : (cell[0]==='yellow') ? '#FDE047' : '#4ADE80',
-                'height': '2.5rem',
-                'width': '2.5rem',
+                'height': '3rem',
+                'width': '3rem',
                 'textAlign': 'center',
                 'borderWidth': '1px',
                 'borderColor': 'black',
                 'borderStyle': 'solid',
                 'borderRadius': '0.25rem',
-                'marginLeft': '0.125rem',
-                'marginRight': '0.125rem'
+                'marginLeft': '0.150rem',
+                'marginRight': '0.150rem',
+                'textTransform': 'uppercase'
               }}
               // className={`h-10 w-10 text-center border border-gray-900 bg-green-400 rounded mx-0.5`}
             />
