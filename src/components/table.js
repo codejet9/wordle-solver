@@ -20,8 +20,8 @@ const Table = ({wordsList}) => {
               <tr className="bg-white border-b hover:bg-gray-200" key={index}>
                 <td className="px-3 py-2 text-black">{index+1}</td>
                 <td className="px-3 py-2 text-black">{wordEntity[0]}</td>
-                <td className="px-3 py-2 text-black font-mono">{wordEntity[1]}</td>
-                <td className="px-3 py-2 text-black font-mono">{wordEntity[2]}</td>
+                <td className="px-3 py-2 text-black font-mono">{wordEntity[1].toFixed(3)}</td>
+                <td className="px-3 py-2 text-black font-mono">{wordEntity[2].toFixed(5)}</td>
               </tr>
             ))}
 
