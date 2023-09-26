@@ -29,7 +29,7 @@ const BackspaceSVG = () => (
   </svg>
 );
 
-const Keyboard = ({  }) => {
+const Keyboard = ({}) => {
   const handleKeyClick = (key) => {
     var code=0;
     if(key==='Backspace') code=8;
@@ -40,8 +40,8 @@ const Keyboard = ({  }) => {
     window.dispatchEvent(keydownEvent);
   }
   return (
-    <div>
-      <div className="bg-gray-800 p-3 rounded-lg shadow-lg">
+    <div className="bg-gray-800 rounded-lg shadow-lg flex flex-row p-3 gap-2">
+      <div className="">
         {keysLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex justify-center space-x-2 m-1">
             {row.map((key, keyIndex) => (
@@ -55,7 +55,26 @@ const Keyboard = ({  }) => {
             ))}
           </div>
         ))}
+
       </div>
+      <div className="p-2"><ColorButtons /></div>
+    </div>
+  )
+}
+
+
+const ColorButtons = ({}) => {
+  const handleColor = (color) => {
+
+    const keydownEvent = new KeyboardEvent('keydown', { key: color });
+    window.dispatchEvent(keydownEvent);
+  }
+
+  return(
+    <div className="flex flex-col gap-2">
+      <button onClick={() => handleColor('green')}><div className="p-4 rounded-md shadow-md bg-[#4ADE80] w-8"></div></button>
+      <button onClick={() => handleColor('yellow')}><div className="p-4 rounded-md shadow-md bg-[#FDE047] w-8"></div></button>
+      <button onClick={() => handleColor('gray')}><div className="p-4 rounded-md shadow-md bg-[#9CA3AF] w-8"></div></button>
     </div>
   )
 }

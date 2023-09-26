@@ -76,6 +76,36 @@ const LetterGrid = ({ handleWordData }) => {
 
       handleWordData(wordData);
     }
+
+    else if(event.key==='green'){
+      const colNow=Math.max(curCol,0);
+
+      setGrid(prevGrid => {
+        const newGrid = [...prevGrid];
+        newGrid[curRow][colNow][0] = event.key;
+        return newGrid;
+      });
+    }
+
+    else if(event.key==='yellow'){
+      const colNow=Math.max(curCol,0);
+
+      setGrid(prevGrid => {
+        const newGrid = [...prevGrid];
+        newGrid[curRow][colNow][0] = event.key;
+        return newGrid;
+      });
+    }
+
+    else if(event.key==='gray'){
+      const colNow=Math.max(curCol,0);
+
+      setGrid(prevGrid => {
+        const newGrid = [...prevGrid];
+        newGrid[curRow][colNow][0] = event.key;
+        return newGrid;
+      });
+    }
   }
 
   const handleColorChange = (rowIndex, colIndex) => {
