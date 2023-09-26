@@ -8,10 +8,10 @@ const Table = ({wordsList}) => {
         <table className="w-full text-center font-serif">
           <thead className="text-white bg-gray-800 ">
             <tr>
-              <th scope="col" className="px-2 py-3"> # </th>
-              <th scope="col" className="px-2 py-3"> Best Words </th>
-              <th scope="col" className="px-2 py-3"> Entropy </th>
-              <th scope="col" className="px-2 py-3"> Probability </th>
+              <th scope="col" className="px-3 py-3"> # </th>
+              <th scope="col" className="px-3 py-3"> Best Words </th>
+              <th scope="col" className="px-3 py-3"> Entropy </th>
+              <th scope="col" className="px-3 py-3"> Relative Probability </th>
             </tr>
           </thead>
 

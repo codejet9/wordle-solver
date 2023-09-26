@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import Keyboard from './keyboard';
 
 const createInitialGrid = (rows, cols) => {
   const grid = [];
   for (let i = 0; i < rows; i++) {
     const row = [];
-    for(let j=0;j<cols;j++){
-      row.push(['gray',''])
+    for (let j = 0; j < cols; j++) {
+      row.push(['gray', ''])
     }
     grid.push(row)
   }
@@ -13,106 +14,117 @@ const createInitialGrid = (rows, cols) => {
 };
 
 
-const LetterGrid = ({handleWordData}) => {
+const LetterGrid = ({ handleWordData }) => {
   const rows = 6;
   const cols = 5;
 
-  const [grid, setGrid] = useState(createInitialGrid(rows,cols));
-  const inputRefs = useRef([]);
+  const [grid, setGrid] = useState(createInitialGrid(rows, cols));
+  var curRow = 0, curCol = -1;
 
-  
-  const handleInputChange = (rowIndex, colIndex, event) => {
-    const { value } = event.target;
-    setGrid(prevGrid => {
-      const newGrid = [...prevGrid];
-      newGrid[rowIndex][colIndex][1] = value;
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+  }, [])
 
-      // Move focus to the next cell in the adjacent column
-      if (colIndex < cols - 1 && value!=='') {
-        inputRefs.current[rowIndex][colIndex + 1].focus();
-      }
 
-      return newGrid;
-    });
-  };
+  const handleKeyPress = (event) => {
 
-  const handleKeyDown = (rowIndex, colIndex, event) => {
-    if(grid[rowIndex][colIndex][1]==='') return;
-
-    if (event.key === 'Enter') {
-      if (colIndex === cols - 1 && rowIndex < rows - 1) {
-        // If in the last column and not in the last row, move focus to the next row's first cell
-        inputRefs.current[rowIndex + 1][0].focus();
-      }
-
-      if(colIndex===cols-1 ){
-        const wordData = []
-        for(let i=0;i<cols;i++){
-          if(grid[rowIndex][i][0]==='green'){
-            if(rowIndex+1<rows) grid[rowIndex+1][i]=grid[rowIndex][i];
-          }
-          wordData.push(grid[rowIndex][i]);
-        }
-
-        handleWordData(wordData);
-      }
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+      curCol = (Math.min(curCol + 1, cols - 1));
+      setGrid(prevGrid => {
+        const newGrid = [...prevGrid];
+        newGrid[curRow][curCol][1] = event.key;
+        return newGrid;
+      });
     }
-  };
 
-  
+    else if (event.keyCode === 8) {
+      if (curCol < 0) return;
+
+      setGrid(prevGrid => {
+        const newGrid = [...prevGrid];
+        newGrid[curRow][curCol][1] = '';
+        curCol = (Math.max(curCol - 1, -1));
+        return newGrid;
+      });
+    }
+    
+    else if (event.keyCode === 13) {
+      var ok = 1;
+      for (let i = 0; i < cols; i++) {
+        if (grid[curRow][i][1] === '') ok = 0;
+      }
+      if (!ok) return;
+
+      const rowNow = curRow;
+      curRow=(Math.min(curRow + 1, rows - 1));
+      curCol=(-1);
+
+      const wordData = []
+      for (let i = 0; i < cols; i++) {
+        if (grid[rowNow][i][0] === 'green') {
+          if (rowNow + 1 < rows) {
+            setGrid(prevGrid => {
+              const newGrid = [...prevGrid];
+              newGrid[rowNow + 1][i] = newGrid[rowNow][i];
+              return newGrid;
+            });
+
+          }
+        }
+        wordData.push(grid[rowNow][i]);
+      }
+
+      handleWordData(wordData);
+    }
+  }
 
   const handleColorChange = (rowIndex, colIndex) => {
     setGrid(prevGrid => {
       const newGrid = [...prevGrid];
-      
-      if(newGrid[rowIndex][colIndex][0]==='gray'){
-        newGrid[rowIndex][colIndex][0]='yellow';
+
+      if (newGrid[rowIndex][colIndex][0] === 'gray') {
+        newGrid[rowIndex][colIndex][0] = 'yellow';
       }
-      else if(newGrid[rowIndex][colIndex][0]==='yellow'){
-        newGrid[rowIndex][colIndex][0]='green';
+      else if (newGrid[rowIndex][colIndex][0] === 'yellow') {
+        newGrid[rowIndex][colIndex][0] = 'green';
       }
-      else if(newGrid[rowIndex][colIndex][0]==='green'){
-        newGrid[rowIndex][colIndex][0]='gray';
+      else if (newGrid[rowIndex][colIndex][0] === 'green') {
+        newGrid[rowIndex][colIndex][0] = 'gray';
       }
-      return newGrid; 
+      return newGrid;
     });
   }
 
   return (
-    <div className="grid grid-rows-6 gap-1 min-w-[17rem]">
-      {grid.map((row, rowIndex) => (
-        <div key={rowIndex} >
-          {row.map((cell, colIndex) => (
-            <input
-              key={colIndex}
-              type="text"
-              maxLength={1}
-              value={cell[1]}
-              onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
-              onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
-              onClick={() => handleColorChange(rowIndex, colIndex)}
-              ref={(input) => {
-                inputRefs.current[rowIndex] = inputRefs.current[rowIndex] || [];
-                inputRefs.current[rowIndex][colIndex] = input;
-              }}
-              style={{
-                'backgroundColor':(cell[0]==='white') ? 'white' : (cell[0]==='gray') ? '#9CA3AF' : (cell[0]==='yellow') ? '#FDE047' : '#4ADE80',
-                'height': '3rem',
-                'width': '3rem',
-                'textAlign': 'center',
-                'borderWidth': '1px',
-                'borderColor': 'black',
-                'borderStyle': 'solid',
-                'borderRadius': '0.25rem',
-                'marginLeft': '0.150rem',
-                'marginRight': '0.150rem',
-                'textTransform': 'uppercase'
-              }}
-              // className={`h-10 w-10 text-center border border-gray-900 bg-green-400 rounded mx-0.5`}
-            />
-          ))}
-        </div>
-      ))}
+    <div className='flex flex-col items-center gap-3'>
+      <div className="grid grid-rows-6 gap-1 min-w-[17rem]">
+        {grid.map((row, rowIndex) => (
+          <div key={rowIndex} className='flex flex-row'>
+            {row.map((cell, colIndex) => (
+              <div
+                key={colIndex}
+                onClick={() => handleColorChange(rowIndex, colIndex)}
+                style={{
+                  'backgroundColor': (cell[0] === 'white') ? 'white' : (cell[0] === 'gray') ? '#9CA3AF' : (cell[0] === 'yellow') ? '#FDE047' : '#4ADE80',
+                  'height': '3rem',
+                  'width': '3rem',
+                  'textAlign': 'center',
+                  'borderWidth': '1px',
+                  'borderColor': 'black',
+                  'borderStyle': 'solid',
+                  'borderRadius': '0.25rem',
+                  'marginLeft': '0.150rem',
+                  'marginRight': '0.150rem',
+                  'textTransform': 'uppercase',
+                  'padding': '0.5rem'
+                }}
+              >{cell[1]}</div>
+            ))}
+          </div>
+        ))}
+
+      </div>
+      <Keyboard  />
     </div>
   );
 };

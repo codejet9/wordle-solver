@@ -22,9 +22,9 @@ const App = () => {
     <div className='min-w-[20rem]'>
       <Header />
 
-      <main className='pt-20 pb-12 px-6 flex flex-row flex-wrap justify-center gap-10 overflow-x-auto'>
+      <main className='pt-20 pb-12 px-6 flex flex-row flex-wrap justify-center gap-20 overflow-x-auto'>
         <div><LetterGrid handleWordData={handleWordData}/></div>
-        <div className=' overflow-x-auto'> <Table wordsList={wordsList}/></div>
+        <div className='overflow-x-auto'> <Table wordsList={wordsList}/></div>
       </main>
     </div>
   );
