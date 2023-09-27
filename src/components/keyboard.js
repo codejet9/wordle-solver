@@ -40,7 +40,7 @@ const Keyboard = ({}) => {
     window.dispatchEvent(keydownEvent);
   }
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg flex flex-row p-3 gap-2">
+    <div className="bg-gray-800 rounded-lg shadow-lg flex flex-row p-1 sm:p-3 sm:gap-2">
       <div className="">
         {keysLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex justify-center space-x-2 m-1">
@@ -48,7 +48,7 @@ const Keyboard = ({}) => {
               <button
                 key={keyIndex}
                 onClick={() => handleKeyClick(key)}
-                className="px-4 py-2 uppercase font-semibold rounded-lg shadow-md bg-gray-700 text-blue-500 hover:bg-gray-600 focus:outline-none"
+                className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base uppercase font-semibold rounded-sm sm:rounded-lg shadow-md bg-gray-700 text-blue-500 hover:bg-gray-600 focus:outline-none"
               >
                 {key==='Backspace' ? <BackspaceSVG /> : key}
               </button>
@@ -64,17 +64,17 @@ const Keyboard = ({}) => {
 
 
 const ColorButtons = ({}) => {
-  const handleColor = (color) => {
 
+  const handleColor = (color) => {
     const keydownEvent = new KeyboardEvent('keydown', { key: color });
     window.dispatchEvent(keydownEvent);
   }
 
   return(
     <div className="flex flex-col gap-2">
-      <button onClick={() => handleColor('green')}><div className="p-4 rounded-md shadow-md bg-[#4ADE80] w-8"></div></button>
-      <button onClick={() => handleColor('yellow')}><div className="p-4 rounded-md shadow-md bg-[#FDE047] w-8"></div></button>
-      <button onClick={() => handleColor('gray')}><div className="p-4 rounded-md shadow-md bg-[#9CA3AF] w-8"></div></button>
+      <button onClick={() => handleColor('green')}><div className="p-2 sm:p-4 rounded-sm sm:rounded-md shadow-md bg-[#4ADE80] w-4 sm:w-8"></div></button>
+      <button onClick={() => handleColor('yellow')}><div className="p-2 sm:p-4 rounded-sm sm:rounded-md shadow-md bg-[#FDE047] w-4 sm:w-8"></div></button>
+      <button onClick={() => handleColor('gray')}><div className="p-2 sm:p-4 rounded-sm sm:rounded-md shadow-md bg-[#9CA3AF] w-4 sm:w-8"></div></button>
     </div>
   )
 }
